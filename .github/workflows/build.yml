@@ -1,7 +1,7 @@
 # Builds Windows NSIS installer (.exe) on GitHub-hosted runners.
 # Triggers: manual workflow_dispatch, or a v* tag.
 # public/data/games.json is committed; prepare-data uses CI mode when ../web is absent.
-# Cover thumbs (public/thumbs/) are optional and may be added later via Git LFS.
+# Thumbs and small screenshots (public/thumbs, public/screenshots) live in Git LFS; checkout pulls them.
 name: build
 on:
   workflow_dispatch:
@@ -12,6 +12,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
       - uses: actions/setup-node@v4
         with:
           node-version: 22
