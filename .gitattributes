@@ -1,0 +1,7 @@
+# Git LFS — binary images (track going forward; do not rewrite history)
+screenshots/*.png filter=lfs diff=lfs merge=lfs -text
+public/screenshots/**/*.webp filter=lfs diff=lfs merge=lfs -text
+public/thumbs/**/*.webp filter=lfs diff=lfs merge=lfs -text
+public/covers/** filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+screenshots/v116-*.png filter=lfs diff=lfs merge=lfs -text

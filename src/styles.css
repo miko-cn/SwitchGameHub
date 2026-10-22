@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@import "@fontsource/chakra-petch/400.css";
+@import "@fontsource/chakra-petch/500.css";
+@import "@fontsource/chakra-petch/600.css";
+@import "@fontsource/chakra-petch/700.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@font-face { font-family: "Smiley Sans"; src: url("/fonts/SmileySans-Oblique.ttf.woff2") format("woff2"); font-display: swap; }
+
+@theme {
+  --font-display: "Chakra Petch", "Smiley Sans", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+  --font-sans: "Chakra Petch", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei UI", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-ink: #0a0c0f;
+  --color-ink2: #0f1216;
+  --color-panel: #13171c;
+  --color-panel2: #1a1f26;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-fg: #e8ecf1;
+  --color-sub: #8a94a2;
+  --color-dim: #5b6470;
+  --color-jred: #ff4b3e;
+  --color-jblue: #18c0f0;
+  --color-teal: #1fb5bc;
+  --color-sun: #f3db74;
+}
+
+:root {
+  --c-want: #f3db74; --c-playing: #18c0f0; --c-played: #1fb5bc; --c-done: #8fe36b; --c-shelved: #8a94a2;
+  color-scheme: dark;
+}
+@layer base {
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--color-ink); color: var(--color-fg); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow: hidden; user-select: none; }
+input, textarea, select, button { font: inherit; color: inherit; }
+textarea, input { user-select: text; }
+::selection { background: rgb(24 192 240 / .35); }
+
+}
+/* scrollbars */
+.scroll { scrollbar-width: thin; scrollbar-color: #2a313a transparent; }
+.scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.scroll::-webkit-scrollbar-thumb { background: #262c34; border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+.scroll::-webkit-scrollbar-thumb:hover { background-color: #36404b; }
+
+/* atmosphere: dot grid + grain */
+.atmos::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(rgb(255 255 255 / .035) 1px, transparent 1.2px); background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse at 60% 0%, #000 0%, transparent 75%); }
+.grain::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 60; opacity: .05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+.font-cjk-display { font-family: "Chakra Petch", "Smiley Sans", sans-serif; letter-spacing: .01em; }
+
+/* Joy-Con split ring: red left half, blue right half */
+.joy-ring { position: relative; }
+.joy-ring::after { content: ""; position: absolute; inset: -3px; border-radius: inherit; padding: 2px; pointer-events: none; opacity: 0;
+  background: linear-gradient(90deg, var(--color-jred) 0 50%, var(--color-jblue) 50% 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  transition: opacity .18s ease, inset .18s ease; }
+.tile:hover .joy-ring::after, .tile:focus-visible .joy-ring::after, .joy-ring.on::after { opacity: 1; inset: -4px; }
+
+.tile { outline: none; }
+.tile .cover { transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, filter .3s; }
+.tile:hover .cover, .tile:focus-visible .cover { transform: translateY(-6px) scale(1.025); box-shadow: 0 18px 40px -12px rgb(0 0 0 / .8), 0 0 0 1px rgb(255 255 255 / .06); }
+.tile .reveal { opacity: 0; transform: translateY(8px); transition: all .25s ease; }
+.tile:hover .reveal, .tile:focus-visible .reveal { opacity: 1; transform: none; }
+.tile img.cv { opacity: 0; transition: opacity .35s ease; }
+.tile img.cv.ok { opacity: 1; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+.rise { animation: rise .45s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes shimmer { from { background-position: -200% 0 } to { background-position: 200% 0 } }
+.skeleton { background: linear-gradient(90deg, #151a20 0%, #1d232b 50%, #151a20 100%); background-size: 200% 100%; animation: shimmer 1.6s linear infinite; }
+@keyframes kenburns { from { transform: scale(1.12) translate3d(0,0,0) } to { transform: scale(1.22) translate3d(-2%, -1%, 0) } }
+.kenburns { animation: kenburns 9s ease-out both; }
+@keyframes progress { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+
+@layer components {
+.chip { display: inline-flex; align-items: center; gap: .3rem; height: 1.45rem; padding: 0 .55rem; border-radius: 999px; font-size: 11.5px; line-height: 1;
+  background: rgb(255 255 255 / .06); color: #c9d0d9; border: 1px solid rgb(255 255 255 / .06); white-space: nowrap; }
+.kbd { font-family: var(--font-mono); font-size: 10.5px; padding: 1px 5px; border-radius: 4px; border: 1px solid rgb(255 255 255 / .12); color: var(--color-sub); }
+
+}
+.conf-high { color: #6fe0c4; } .conf-medium { color: #f3db74; } .conf-low { color: #ff8a7a; } .conf-none { color: #8a94a2; }
+.chip-warn { color: #ff8a7a; background: rgb(255 138 122 / .10); ring-color: rgb(255 138 122 / .25); box-shadow: inset 0 0 0 1px rgb(255 138 122 / .28); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* Price panel: one numeric style for both rows (Chakra Petch tabular), CJK labels in sans — never Smiley Sans */
+.price-row { display: grid; grid-template-columns: 3rem minmax(0, 1fr); column-gap: .75rem; align-items: baseline; }
+.price-label { width: 3rem; font-family: var(--font-sans); font-style: normal; font-size: 11.5px; letter-spacing: .08em; color: var(--color-dim); line-height: 1.2; }
+.price-num { font-family: "Chakra Petch", ui-sans-serif, sans-serif; font-weight: 600; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.01em; line-height: 1; white-space: nowrap; }
+.price-yen { font-size: .62em; font-weight: 600; margin-right: .12em; opacity: .85; }
+.price-meta { margin-top: .4rem; font-family: var(--font-sans); font-size: 11px; line-height: 1.5; color: var(--color-dim); display: flex; align-items: flex-start; gap: .25rem; justify-content: space-between; }
