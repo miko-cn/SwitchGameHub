@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "SwitchLibrary",
+  "mainBinaryName": "switch-library",
+  "version": "1.1.7",
+  "identifier": "com.catyu.switchlibrary",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run prepare-data && npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      { "label": "main", "title": "Switch 游戏库", "width": 1440, "height": 900, "minWidth": 1024, "minHeight": 680, "center": true, "backgroundColor": "#0a0c0f" }
+    ],
+    "security": {
+      "csp": "default-src 'self' ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost",
+      "assetProtocol": { "enable": true, "scope": [] }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["deb", "rpm", "appimage", "nsis"],
+    "category": "Game",
+    "shortDescription": "Switch 游戏资料库与游玩记录",
+    "longDescription": "本地 Switch 游戏资料库：评分、玩家评价、封面、简介（附来源与匹配度），以及本地保存的游玩状态、收藏、评分、标签和笔记。",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+    "linux": { "deb": { "depends": [] }, "appimage": { "bundleMediaFramework": false } },
+    "windows": { "nsis": { "languages": ["SimpChinese", "English"], "displayLanguageSelector": false, "installMode": "currentUser" }, "webviewInstallMode": { "type": "downloadBootstrapper" } }
+  }
+}

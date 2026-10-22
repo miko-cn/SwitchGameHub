@@ -1,0 +1,27 @@
+# deps & build
+node_modules/
+dist/
+src-tauri/target/
+*.log
+
+# release artifacts (built installers — publish via CI/releases)
+release/
+!release/arch/PKGBUILD
+!release/.gitkeep
+
+# large media tracked via Git LFS (.gitattributes); keep release/out of git
+# public/screenshots/ and public/thumbs/ are LFS-managed when added
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# packaged installers accidentally copied into tree
+packaging/**/*.deb
+packaging/**/*.rpm
+packaging/**/*.AppImage
+packaging/**/*.exe
+*.bak
