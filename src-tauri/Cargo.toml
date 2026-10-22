@@ -1,6 +1,6 @@
 [package]
 name = "switch-library"
-version = "1.1.7"
+version = "1.1.8"
 description = "Switch 游戏库 — 本地游戏资料库与游玩记录"
 edition = "2021"
 

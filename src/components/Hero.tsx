@@ -9,14 +9,24 @@ export function Hero({ items, onOpen }: { items: Game[]; onOpen: (id: number) =>
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
   useEffect(() => { if (paused || items.length < 2) return; const t = setTimeout(() => setI(x => (x + 1) % items.length), DUR); return () => clearTimeout(t) }, [i, paused, items.length])
+  // 预解码下一张封面，避免切换时图片在淡入末尾才解码出来"啪"地一下出现
+  useEffect(() => {
+    if (items.length < 2) return
+    const n = items[(i + 1) % items.length]; const src = fullCover(n) || n.thumb
+    if (src) { const im = new Image(); im.src = src; im.decode?.().catch(() => {}) }
+  }, [i, items])
   if (!items.length) return null
   const g = items[i % items.length]
   const img = fullCover(g) || g.thumb!
   return (
     <section className="relative h-[340px] rounded-[22px] overflow-hidden ring-1 ring-white/[.06] bg-panel" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <AnimatePresence initial={false} mode="popLayout">
-        <motion.div key={g.序号} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7, ease: [.2, .8, .2, 1] }}>
-          <div className="absolute inset-0 bg-cover bg-center blur-2xl opacity-60 kenburns" style={{ backgroundImage: `url("${img}")` }} />
+      <AnimatePresence initial={false}>
+        {/* 交叉淡入：新页叠在上面从 0→1，旧页保持不透明垫底，等新页完全盖住后再移除，
+            不会出现两层都半透明时露出底色、以及结束瞬间旧层被拆掉的闪烁。
+            图层常驻合成层（will-change），避免动画结束时 WebKit 把模糊层降级重绘导致闪一下。 */}
+        <motion.div key={g.序号} className="absolute inset-0 z-[1] [will-change:opacity] [transform:translateZ(0)] [backface-visibility:hidden]"
+          initial={{ opacity: 0 }} animate={{ opacity: 1, zIndex: 1 }} exit={{ opacity: 1, zIndex: 0, transition: { duration: 0, delay: .75 } }} transition={{ duration: .7, ease: [.2, .8, .2, 1] }}>
+          <div className="absolute -inset-8 bg-cover bg-center blur-2xl opacity-60 kenburns [will-change:transform]" style={{ backgroundImage: `url("${img}")` }} />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,#0a0c0f_0%,rgba(10,12,15,.9)_38%,rgba(10,12,15,.35)_70%,rgba(10,12,15,.7)_100%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(0deg,#0a0c0f,transparent_45%)]" />
           <motion.div className="absolute right-[14%] top-1/2 w-[250px] h-[250px] -translate-y-1/2 rounded-[18px] overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,.9)] ring-1 ring-white/10"
