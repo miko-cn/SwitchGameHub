@@ -77,7 +77,7 @@ export function DataDialog({ games, onClose, toast }: { games: Game[]; onClose: 
         {isTauri && paths && <div className="mt-5 rounded-xl bg-panel ring-1 ring-white/[.05] p-4 text-[12.5px] space-y-2">
           <div className="flex gap-3"><span className="text-dim w-20 shrink-0">数据文件</span><code className="font-mono text-[11.5px] break-all text-fg/80 select-text">{paths.userdata_file}</code></div>
           <div className="flex gap-3"><span className="text-dim w-20 shrink-0">高清封面</span><span className="text-fg/80 break-all">{paths.covers_dir ? <code className="font-mono text-[11.5px] select-text">{paths.covers_dir}</code> : '未找到（正在使用内置缩略图）。把 covers 文件夹放到数据目录或程序旁边即可启用。'}</span></div>
-          <div className="flex gap-3"><span className="text-dim w-20 shrink-0">高清截图包</span><span className="text-fg/80 break-all">{paths.screenshots_dir ? <code className="font-mono text-[11.5px] select-text">{paths.screenshots_dir}</code> : '未找到。安装包仅含缩略图；可把 screenshots 文件夹放到数据目录或程序旁边，或由应用在线加载官方原图。'}</span></div>
+          <div className="flex gap-3"><span className="text-dim w-20 shrink-0">高清截图包</span><span className="text-fg/80 break-all">{paths.screenshots_dir ? <code className="font-mono text-[11.5px] select-text">{paths.screenshots_dir}</code> : '未找到。详情页默认用安装包内缩略图；把高清 screenshots 放到数据目录或程序旁边可启用本地大图。'}</span></div>
           <button onClick={() => openDataDir()} className="mt-1 text-jblue hover:underline">打开数据目录</button>
         </div>}
 

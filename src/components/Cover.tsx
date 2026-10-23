@@ -23,15 +23,13 @@ export function CoverImg({ g, full = false, className = '' }: { g: Game; full?: 
   const [ok, setOk] = useState(false)
   const [src, setSrc] = useState<string | null>(() => (full && fullCover(g)) || g.thumb || null)
   if (!src) return <Placeholder g={g} big={full} />
-  const wide = (g.thumb_ar || 1) > 1.08, tall = (g.thumb_ar || 1) < 0.92
   return (
     <>
-      {(wide || tall) && <div className="absolute inset-0 bg-cover bg-center scale-125 blur-xl opacity-70" style={{ backgroundImage: `url("${src}")` }} />}
       {!ok && <div className="absolute inset-0 skeleton" />}
-      <img src={src} alt="" loading="lazy" decoding="async" draggable={false}
+      <img src={src} alt="" loading={full ? 'eager' : 'lazy'} decoding="async" fetchPriority={full ? 'high' : undefined} draggable={false}
         onLoad={() => setOk(true)}
         onError={() => { if (src !== g.thumb && g.thumb) setSrc(g.thumb); else setSrc(null) }}
-        className={`cv ${ok ? 'ok' : ''} absolute inset-0 w-full h-full ${wide || tall ? 'object-contain' : 'object-cover'} ${className}`} />
+        className={`cv ${ok ? 'ok' : ''} absolute inset-0 w-full h-full object-cover ${className}`} />
     </>
   )
 }
