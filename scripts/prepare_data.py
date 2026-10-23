@@ -15,7 +15,7 @@ OUT_TH = os.path.join(APP, 'public', 'thumbs')
 OUT_SS = os.path.join(APP, 'public', 'screenshots')
 SIZE = int(os.environ.get('THUMB_SIZE', 320))
 QUAL = int(os.environ.get('THUMB_Q', 72))
-SS_THUMB_W = int(os.environ.get('SS_THUMB_W', 360))
+SS_THUMB_W = int(os.environ.get('SS_THUMB_W', 720))
 SS_FULL_W = int(os.environ.get('SS_FULL_W', 1280))
 SS_Q = int(os.environ.get('SS_Q', 76))
 if not os.path.exists(os.path.join(WEB, 'data.json')):
