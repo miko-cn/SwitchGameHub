@@ -1,7 +1,7 @@
 {
   "name": "switch-library",
   "private": true,
-  "version": "1.1.8",
+  "version": "1.1.9",
   "type": "module",
   "scripts": {
     "prepare-data": "python3 scripts/prepare_data.py",

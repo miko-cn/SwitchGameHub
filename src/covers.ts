@@ -8,13 +8,22 @@ export async function initCovers() {
   return coversDir
 }
 export const screenshotsDirectory = () => shotsDir
-/** Large screenshot: optional local pack folder -> official/original source URL (online) -> bundled thumbnail. */
+/**
+ * Resolve gallery image URL, preferring local assets:
+ * 1. Optional HD screenshot pack (screenshots_dir + file)
+ * 2. Bundled small screenshot (thumb) from the install package
+ * 3. Remote official URL only as last resort (slow / needs network)
+ */
 export function resolveShots(shots: Screenshot[]): Screenshot[] {
   return shots.map(sh => {
-    let path = sh.remote || sh.thumb || sh.path
+    let path = sh.thumb || sh.path || sh.remote || ''
     if (shotsDir && sh.file) {
       const sep = shotsDir.includes('\\') ? '\\' : '/'
       path = fileUrl(shotsDir + sep + sh.file.split('/').join(sep))
+    } else if (sh.thumb) {
+      path = sh.thumb
+    } else if (sh.remote) {
+      path = sh.remote
     }
     return { ...sh, path }
   })
